@@ -9,7 +9,7 @@ import numpy as np
 import tensorflow.compat.v1 as tf
 import sys
 
-from PIL import Image, ImageFilter
+from PIL import Image
 
 # This is needed since the notebook is stored in the object_detection folder.
 sys.path.append("..")
@@ -106,11 +106,23 @@ im_width, im_height = shape[1], shape[0]
 
 output_path = "./result.png"
 # Using Image to crop and save the extracted copied image
-im = Image.open(IMAGE_NAME).convert('L')
+# im = Image.open(IMAGE_NAME).convert('L')
+im = cv2.imread(IMAGE_NAME)
 
-im.filter(ImageFilter.GaussianBlur)
+im = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
+im = cv2.GaussianBlur(
+    src=im,
+    ksize=(3, 3),
+    sigmaX=0,
+    sigmaY=0)
 
-im.crop((left, top, right, bottom)).save(output_path, quality=95)
+clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(12, 12))
+im=clahe.apply(im)
+
+_, im = cv2.threshold(im, thresh=165, maxval=255, type=cv2.THRESH_TRUNC + cv2.THRESH_OTSU)
+# im.crop((left, top, right, bottom)).save(output_path, quality=95)
+
+cv2.imwrite(output_path, im)
 
 cv2.imshow('ID-CARD-DETECTOR : ', image)
 
