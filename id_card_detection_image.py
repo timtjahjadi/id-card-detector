@@ -105,7 +105,8 @@ im_width, im_height = shape[1], shape[0]
 
 output_path = "./result.png"
 # Using Image to crop and save the extracted copied image
-im = Image.open(IMAGE_NAME)
+# im = Image.open(IMAGE_NAME)
+im = cv2.imread(IMAGE_NAME)
 im = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
 
 im = cv2.GaussianBlur(
