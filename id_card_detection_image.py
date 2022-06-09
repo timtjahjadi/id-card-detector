@@ -116,6 +116,8 @@ im = cv2.GaussianBlur(
     sigmaX=0,
     sigmaY=0)
 
+im = im[ymin:ymax, xmin:xmax]
+
 clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(12, 12))
 im=clahe.apply(im)
 
@@ -123,9 +125,7 @@ _, im = cv2.threshold(im, thresh=165, maxval=255, type=cv2.THRESH_TRUNC + cv2.TH
 
 # im.crop((left, top, right, bottom)).save(output_path, quality=95)
 
-crop_img = im[left:right, top:bottom]
-
-cv2.imwrite(output_path, crop_img)
+cv2.imwrite(output_path, im)
 
 cv2.imshow('ID-CARD-DETECTOR : ', image)
 
