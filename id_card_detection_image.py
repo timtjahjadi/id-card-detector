@@ -120,6 +120,8 @@ clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(12, 12))
 im=clahe.apply(im)
 
 _, im = cv2.threshold(im, thresh=165, maxval=255, type=cv2.THRESH_TRUNC + cv2.THRESH_OTSU)
+im = im[left:top, right:bottom]
+
 # im.crop((left, top, right, bottom)).save(output_path, quality=95)
 
 cv2.imwrite(output_path, im)
