@@ -123,7 +123,7 @@ im=clahe.apply(im)
 
 _, im = cv2.threshold(im, thresh=165, maxval=255, type=cv2.THRESH_TRUNC + cv2.THRESH_OTSU)
 
-# im.crop((left, top, right, bottom)).save(output_path, quality=95)
+im.crop((left, top, right, bottom)) #.save(output_path, quality=95)
 
 cv2.imwrite(output_path, im)
 
