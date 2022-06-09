@@ -116,7 +116,7 @@ im = cv2.GaussianBlur(
     sigmaX=0,
     sigmaY=0)
 
-im = im[ymin:ymax, xmin:xmax]
+im = im[int(ymin):int(ymax), int(xmin):int(xmax)]
 
 clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(12, 12))
 im=clahe.apply(im)
