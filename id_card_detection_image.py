@@ -122,7 +122,7 @@ _, im = cv2.threshold(im, thresh=165, maxval=255, type=cv2.THRESH_TRUNC + cv2.TH
 
 cv2.imwrite(output_path, im)
 
-im2 = Image.open(IMAGE_NAME)
+im2 = Image.open(output_path)
 im2.crop((left, top, right, bottom)).save(output_path, quality=95)
 
 cv2.imshow('ID-CARD-DETECTOR : ', image)
