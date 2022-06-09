@@ -3,7 +3,7 @@
 import os
 import cv2
 import numpy as np
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 import sys
 
 # This is needed since the notebook is stored in the object_detection folder.
@@ -13,6 +13,7 @@ sys.path.append("..")
 from utils import label_map_util
 from utils import visualization_utils as vis_util
 
+tf.disable_v2_behavior()
 # Name of the directory containing the object detection module we're using
 MODEL_NAME = 'model'
 
@@ -41,8 +42,8 @@ category_index = label_map_util.create_category_index(categories)
 # Load the Tensorflow model into memory.
 detection_graph = tf.Graph()
 with detection_graph.as_default():
-    od_graph_def = tf.GraphDef()
-    with tf.gfile.GFile(PATH_TO_CKPT, 'rb') as fid:
+    od_graph_def = tf.compat.v1.GraphDef()
+    with tf.compat.v2.io.gfile.GFile(PATH_TO_CKPT, 'rb') as fid:
         serialized_graph = fid.read()
         od_graph_def.ParseFromString(serialized_graph)
         tf.import_graph_def(od_graph_def, name='')

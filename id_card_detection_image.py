@@ -18,7 +18,7 @@ from utils import visualization_utils as vis_util
 tf.disable_v2_behavior()
 # Name of the directory containing the object detection module we're using
 MODEL_NAME = 'model'
-IMAGE_NAME = 'test_images/image1.png'
+IMAGE_NAME = 'test_images/image2.png'
 
 # Grab path to current working directory
 CWD_PATH = os.getcwd()
@@ -102,9 +102,8 @@ im_width, im_height = shape[1], shape[0]
 (left, right, top, bottom) = (xmin * im_width, xmax * im_width, ymin * im_height, ymax * im_height)
 
 output_path = "./result.png"
-image_path = "./test_images/image1.png"
 # Using Image to crop and save the extracted copied image
-im = Image.open(image_path)
+im = Image.open(IMAGE_NAME)
 im.crop((left, top, right, bottom)).save(output_path, quality=95)
 
 cv2.imshow('ID-CARD-DETECTOR : ', image)
