@@ -116,7 +116,7 @@ image = cv2.GaussianBlur(
     sigmaX=0,
     sigmaY=0)
 
-clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(12, 12)
+clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(12, 12))
 image=clahe.apply(image)
 
 _, image = cv2.threshold(image, thresh=165, maxval=255, type=cv2.THRESH_TRUNC + cv2.THRESH_OTSU)
