@@ -1,5 +1,7 @@
 
 # Import packages
+from utils import visualization_utils as vis_util
+from utils import label_map_util
 import os
 import cv2
 import numpy as np
@@ -12,8 +14,6 @@ from PIL import Image
 sys.path.append("..")
 
 # Import utilites
-from utils import label_map_util
-from utils import visualization_utils as vis_util
 
 tf.disable_v2_behavior()
 # Name of the directory containing the object detection module we're using
@@ -25,13 +25,13 @@ CWD_PATH = os.getcwd()
 
 # Path to frozen detection graph .pb file, which contains the model that is used
 # for object detection.
-PATH_TO_CKPT = os.path.join(CWD_PATH,MODEL_NAME,'frozen_inference_graph.pb')
+PATH_TO_CKPT = os.path.join(CWD_PATH, MODEL_NAME, 'frozen_inference_graph.pb')
 
 # Path to label map file
-PATH_TO_LABELS = os.path.join(CWD_PATH,'data','labelmap.pbtxt')
+PATH_TO_LABELS = os.path.join(CWD_PATH, 'data', 'labelmap.pbtxt')
 
 # Path to image
-PATH_TO_IMAGE = os.path.join(CWD_PATH,IMAGE_NAME)
+PATH_TO_IMAGE = os.path.join(CWD_PATH, IMAGE_NAME)
 
 # Number of classes the object detector can identify
 NUM_CLASSES = 1
@@ -42,7 +42,8 @@ NUM_CLASSES = 1
 # Here we use internal utility functions, but anything that returns a
 # dictionary mapping integers to appropriate string labels would be fine
 label_map = label_map_util.load_labelmap(PATH_TO_LABELS)
-categories = label_map_util.convert_label_map_to_categories(label_map, max_num_classes=NUM_CLASSES, use_display_name=True)
+categories = label_map_util.convert_label_map_to_categories(
+    label_map, max_num_classes=NUM_CLASSES, use_display_name=True)
 category_index = label_map_util.create_category_index(categories)
 
 # Load the Tensorflow model into memory.
@@ -99,16 +100,30 @@ ymin, xmin, ymax, xmax = array_coord
 
 shape = np.shape(image)
 im_width, im_height = shape[1], shape[0]
-(left, right, top, bottom) = (xmin * im_width, xmax * im_width, ymin * im_height, ymax * im_height)
+(left, right, top, bottom) = (xmin * im_width,
+                              xmax * im_width, ymin * im_height, ymax * im_height)
 
 output_path = "./result.png"
 # Using Image to crop and save the extracted copied image
 im = Image.open(IMAGE_NAME)
 im.crop((left, top, right, bottom)).save(output_path, quality=95)
 
+image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+image = cv2.GaussianBlur(
+    src=image,
+    ksize=(3, 3),
+    sigmaX=0,
+    sigmaY=0)
+
+clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(12, 12)
+image=clahe.apply(image)
+
+_, image = cv2.threshold(image, thresh=165, maxval=255, type=cv2.THRESH_TRUNC + cv2.THRESH_OTSU)
+
 cv2.imshow('ID-CARD-DETECTOR : ', image)
 
-image_cropped = cv2.imread(output_path)
+image_cropped=cv2.imread(output_path)
 cv2.imshow("ID-CARD-CROPPED : ", image_cropped)
 
 # All the results have been drawn on image. Now display the image.
