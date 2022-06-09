@@ -106,20 +106,19 @@ im_width, im_height = shape[1], shape[0]
 output_path = "./result.png"
 # Using Image to crop and save the extracted copied image
 im = Image.open(IMAGE_NAME)
-im.crop((left, top, right, bottom)).save(output_path, quality=95)
+im = cv2.cvtColor(im, cv2.COLOR_BGR2GRAY)
 
-image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-image = cv2.GaussianBlur(
-    src=image,
+im = cv2.GaussianBlur(
+    src=im,
     ksize=(3, 3),
     sigmaX=0,
     sigmaY=0)
 
 clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(12, 12))
-image=clahe.apply(image)
+im=clahe.apply(im)
 
-_, image = cv2.threshold(image, thresh=165, maxval=255, type=cv2.THRESH_TRUNC + cv2.THRESH_OTSU)
+_, im = cv2.threshold(im, thresh=165, maxval=255, type=cv2.THRESH_TRUNC + cv2.THRESH_OTSU)
+im.crop((left, top, right, bottom)).save(output_path, quality=95)
 
 cv2.imshow('ID-CARD-DETECTOR : ', image)
 
