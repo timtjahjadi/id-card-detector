@@ -123,7 +123,7 @@ _, im = cv2.threshold(im, thresh=165, maxval=255, type=cv2.THRESH_TRUNC + cv2.TH
 
 # im.crop((left, top, right, bottom)).save(output_path, quality=95)
 
-crop_img = im[top:top+im_height, left:left+im_width]
+crop_img = im[left:right, top:bottom]
 
 cv2.imwrite(output_path, crop_img)
 
