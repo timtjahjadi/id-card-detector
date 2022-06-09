@@ -120,11 +120,16 @@ clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(12, 12))
 im=clahe.apply(im)
 
 _, im = cv2.threshold(im, thresh=165, maxval=255, type=cv2.THRESH_TRUNC + cv2.THRESH_OTSU)
-im = im[left:top, right:bottom]
+
+y=ymin
+x=xmin
+h=im_height
+w=im_width
+crop = image[y:y+h, x:x+w]
 
 # im.crop((left, top, right, bottom)).save(output_path, quality=95)
 
-cv2.imwrite(output_path, im)
+cv2.imwrite(output_path, crop)
 
 cv2.imshow('ID-CARD-DETECTOR : ', image)
 
